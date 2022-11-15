@@ -1,0 +1,183 @@
+Nachiket V. Chavhan
+--these are query solutinos to SQL EXERCISE question provided by our Senior------ 
+
+create database practise;
+
+use database practise;
+
+create table public.LOCATION
+
+(LOC_ID int, STREET_NO int DEFAULT NULL, VILL_NAME varchar(40) default null, CITY varchar(30) not null, STATE varchar(25) not null,COUNTRY varchar(30) not null );
+alter table LOCATION ADD CONSTRAINT pk_loaction PRIMARY KEY (LOC_ID);
+insert into LOCATION(LOC_ID,STREET_NO,VILL_NAME,CITY,STATE,COUNTRY) VALUES (40010,0,'abc','amravati','Maharashtra','india');
+insert into LOCATION(LOC_ID,STREET_NO,VILL_NAME,CITY,STATE,COUNTRY) VALUES (40011,0,'abc','Gurgaon','Haryana','india');
+insert into LOCATION(LOC_ID,STREET_NO,VILL_NAME,CITY,STATE,COUNTRY) VALUES (40012,0,'abc','mumbai','Maharashtra','india');
+insert into LOCATION(LOC_ID,STREET_NO,VILL_NAME,CITY,STATE,COUNTRY) VALUES (40013,0,'abc','Andra','Andra Pradesh','india');
+insert into LOCATION(LOC_ID,STREET_NO,VILL_NAME,CITY,STATE,COUNTRY) VALUES (40014,0,'abc','Bangalore','Karnataka','india');
+
+create table public.JOBS
+(JOB_ID int primary key,JOB_TITLE varchar(30) not null);
+insert into JOBS(JOB_ID,JOB_TITLE) VALUES (1234,'manager');
+insert into JOBS(JOB_ID,JOB_TITLE) VALUES (1235,'sr.manager');
+insert into JOBS(JOB_ID,JOB_TITLE) VALUES (1236,'jr.manager');
+insert into JOBS(JOB_ID,JOB_TITLE) VALUES (1237,'head.manager');
+insert into JOBS(JOB_ID,JOB_TITLE) VALUES (1238,'head.manager');
+
+create table public.DEPARTMENT
+(DEPT_ID INT primary key,DEPT_NAME varchar(30),LOC_ID int default null,DEPT_HEAD varchar(30) not null);
+alter table DEPARTMENT ADD FOREIGN KEY(LOC_ID) references LOCATION(LOC_ID);
+insert into DEPARTMENT(DEPT_ID,DEPT_NAME,LOC_ID,DEPT_HEAD) VALUES (4321,'ADMIN',40010,'MR.AKASH');
+insert into DEPARTMENT(DEPT_ID,DEPT_NAME,LOC_ID,DEPT_HEAD) VALUES (4322,'CEO',40011,'MR.NACHIKET');
+insert into DEPARTMENT(DEPT_ID,DEPT_NAME,LOC_ID,DEPT_HEAD) VALUES (4323,'IT',40012,'MR.RAKSHIT');
+insert into DEPARTMENT(DEPT_ID,DEPT_NAME,LOC_ID,DEPT_HEAD) VALUES (4324,'CFO',40013,'MR.PADMA');
+insert into DEPARTMENT(DEPT_ID,DEPT_NAME,LOC_ID,DEPT_HEAD) VALUES (4325,'IT',40014,'MR.LOKESH');
+
+
+create table public.DEPENDENTS
+(DEP_ID INT PRIMARY KEY,DEP_NAME VARCHAR(50) NOT NULL,RELATIONSHIP VARCHAR(25) NOT NULL,EMPLOYEE_ID INT NOT NULL);
+alter table DEPENDENTS ADD FOREIGN KEY(EMPLOYEE_ID) references EMPLOYEE(EMPLOYEE_ID);
+insert into DEPENDENTS(DEP_ID,DEP_NAME,RELATIONSHIP,EMPLOYEE_ID) VALUES (1,'KUMAR','BROTHER',7756586177);
+insert into DEPENDENTS(DEP_ID,DEP_NAME,RELATIONSHIP,EMPLOYEE_ID) VALUES (2,'KALANK','BROTHER',7757366177);
+insert into DEPENDENTS(DEP_ID,DEP_NAME,RELATIONSHIP,EMPLOYEE_ID) VALUES (3,'KESHAV','BROTHER',7772586177);
+insert into DEPENDENTS(DEP_ID,DEP_NAME,RELATIONSHIP,EMPLOYEE_ID) VALUES (4,'KIRAN','BROTHER',77567256177);
+insert into DEPENDENTS(DEP_ID,DEP_NAME,RELATIONSHIP,EMPLOYEE_ID) VALUES (5,'KARAN','BROTHER',77565973177);
+
+create table public.EMPLOYEE
+(EMPLOYEE_ID INT primary key,EMP_NAME VARCHAR (30) NOT NULL,DEPT_ID INT NOT NULL,JOINING_DT DATE,DOB DATE,YRS_OF_EXP NUMERIC, PHONE_NUMB INT,MARTIAL_STATUS BOOLEAN,JOB_ID INT NOT NULL,SALARY DECIMAL (8,2)NOT NULL,MANAGER_ID  INT NOT NULL);
+alter table EMPLOYEE ADD FOREIGN KEY(DEPT_ID) references DEPARTMENT(DEPT_ID);
+alter table EMPLOYEE ADD FOREIGN KEY(JOB_ID) references JOBS(JOB_ID);
+INSERT INTO EMPLOYEE (EMPLOYEE_ID,EMP_NAME,DEPT_ID,JOINING_DT,DOB,YRS_OF_EXP,PHONE_NUMB,MARTIAL_STATUS,JOB_ID,SALARY,MANAGER_ID) VALUES 
+(7756586177,'NACHIKET CHAVHAN',4321,'2022-10-04','2000-12-26',10,9320851289,FALSE,1234,54000,44);
+INSERT INTO EMPLOYEE (EMPLOYEE_ID,EMP_NAME,DEPT_ID,JOINING_DT,DOB,YRS_OF_EXP,PHONE_NUMB,MARTIAL_STATUS,JOB_ID,SALARY,MANAGER_ID) VALUES 
+(7757366177,'RAKSHIT JAIN',4322,'2014-10-14','2002-12-26',11,9320851289,FALSE,1235,54000,45);
+INSERT INTO EMPLOYEE (EMPLOYEE_ID,EMP_NAME,DEPT_ID,JOINING_DT,DOB,YRS_OF_EXP,PHONE_NUMB,MARTIAL_STATUS,JOB_ID,SALARY,MANAGER_ID) VALUES 
+(7772586177,'PADMA CHOSPHEL',4323,'2013-10-21','2002-12-26',12,9320851289,TRUE,1236,54000,46);
+INSERT INTO EMPLOYEE (EMPLOYEE_ID,EMP_NAME,DEPT_ID,JOINING_DT,DOB,YRS_OF_EXP,PHONE_NUMB,MARTIAL_STATUS,JOB_ID,SALARY,MANAGER_ID) VALUES 
+(77567256177,'LOKESH PN',4324,'2009-10-05','2002-12-26',14,9320851289,FALSE,1237,54000,47);
+INSERT INTO EMPLOYEE (EMPLOYEE_ID,EMP_NAME,DEPT_ID,JOINING_DT,DOB,YRS_OF_EXP,PHONE_NUMB,MARTIAL_STATUS,JOB_ID,SALARY,MANAGER_ID) VALUES 
+(77565973177,'SPARSH NARANIA',4325,'2022-10-06','2002-12-26',15,9320851289,FALSE,1238,54000,48);
+
+truncate table public.employee;
+truncate table public.department;
+truncate table public.dependents;
+truncate table public.jobs;
+truncate table public.location;
+
+--2.1 Select statements
+SELECT distinct E.EMPLOYEE_ID,E.EMP_NAME,D.DEPT_ID,D.DEPT_NAME FROM EMPLOYEE E, DEPARTMENT D
+WHERE D.DEPT_ID=E.DEPT_ID
+HAVING D.DEPT_NAME IS NOT NULL;
+
+SELECT EMP_NAME, SALARY FROM EMPLOYEE;
+
+--2.2 Where condition
+SELECT EMPLOYEE_ID,EMP_NAME,SALARY FROM EMPLOYEE
+WHERE SALARY < 500000;
+
+SELECT EMPLOYEE_ID,EMP_NAME FROM EMPLOYEE
+WHERE JOINING_DT < ('2015-01-01');
+
+SELECT EMP_NAME,SALARY,MANAGER_ID FROM EMPLOYEE
+WHERE manager_id in (100,120,145,149);
+
+SELECT EMP_NAME FROM EMPLOYEE
+WHERE emp_name like 'R%';
+
+SELECT E1.EMP_NAME,E1.SALARY FROM EMPLOYEE E1
+JOIN EMPLOYEE E2 ON E1.SALARY= E2.SALARY AND E1.EMP_NAME = E2.EMP_NAME;
+
+SELECT E.EMPLOYEE_ID,E.EMP_NAME, D.DEPT_NAME FROM EMPLOYEE E, DEPARTMENT D
+WHERE E.DEPT_ID=D.DEPT_ID AND DEPT_NAME in ('FINANCE','MANUFACTURING','CONSTRUCTION');
+
+
+--2.3 Group By, Order By and Having Conditions
+select count(E.employee_id), D.dept_name from employee E, department D
+where E.DEPT_ID=D.DEPT_ID
+group by D.dept_name;
+
+select emp_name, dept_id from employee where dept_id in (20,50)
+order by emp_name asc;
+
+select e.emp_name,e.dept_id,d.dept_name from employee e, department d
+where e.dept_id=d.dept_id 
+order by e.emp_name; 
+
+select emp_name,dept_id,yrs_of_exp from employee
+where martial_status = 'FALSE'
+order by dept_id;
+
+
+--2.4 Joins
+select e.employee_id,e.emp_name,d.dept_name,l.state from employee e
+left join department d
+on e.DEPT_ID = d.DEPT_ID
+left join location l on d.loc_id = l.loc_id
+where l.state = 'Andra Pradesh';
+
+select e.salary, e.emp_name,j.job_title from employee e 
+right join jobs j
+on e.job_id = j.job_id;
+
+select count(e.employee_id) as number_of_employees, j.job_title from employee e 
+inner join jobs j
+on e.job_id = j.job_id
+group by j.job_title;
+
+select e.emp_name, d.dept_name, e.martial_status as Unmarried from employee e
+full join department d
+on E.DEPT_ID=D.DEPT_ID
+where e.martial_status = 'False';
+
+
+--2.5 Aggregations
+select max(salary) as highest_salary_of_all,min(salary) as Lowest_salary_of_all,max(salary)-min(salary) as Difference
+from employee;
+
+select e.emp_name,e.salary,d.dept_name from employee e, department d
+where e.dept_id = d.dept_id and d.dept_name ='IT' and e.salary >= (select avg(salary) from employee);
+
+select avg(salary),max(salary),min(salary) from employee
+group by dept_id;
+
+--2.6 SQL Functions
+SELECT SUBSTRING(emp_name, 1, 3 ) FROM employee;
+
+SELECT emp_name FROM employee
+WHERE emp_name LIKE '%H'
+  AND LENGTH (emp_name) = 6;
+  
+Select EMP_name,DOB, getdate() as CurrentDate, year(getdate())-year(dob) as age from Employee;
+
+SELECT lower(emp_name), length(emp_name) as name_length FROM employee;
+
+select emp_name,getdate() as CurrentDate from employee;
+
+alter table employee modify salary number;
+
+SELECT TO_CHAR(joining_dt, 'YYYY-MM-DD') FROM employee;
+
+--2.7 Index and view
+create or replace view Bangalore_employees(emp_name,phone_numb,manager_id) as
+select e.emp_name,e.phone_numb,e.manager_id from employee e
+left join department d
+on E.DEPT_ID=D.DEPT_ID
+left join location l on d.loc_id = l.loc_id
+where l.city = 'mumbai';
+select * from Bangalore_employees;
+
+create index EMP_INDEX on employee (emp_name,dob,martial_status);
+
+--2.8 Sub Queries
+select * from employee
+where dept_id in (select dept_id from department
+                  where loc_id in (select loc_id from location
+                                    where loc_id not in (2546)));
+                                                                        
+select * from employee
+where salary >= (select avg(salary) from employee);
+
+select dept_name from department
+where dept_id in (select dept_id from employee
+                   where salary < 250000);
+
+----Thank-You----
